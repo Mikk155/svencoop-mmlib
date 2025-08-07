@@ -8,21 +8,21 @@
 // Example entity: item_inventory
 class CItemInventory : public CBaseEntity {
 public:
-    byte u11_0[144];
+    byte u11_0[148];
     EHandle m_hHolder; // The monster or player holding this item.
     vec3_t m_vecSpawnOrigin; // Spawn-time origin.
     vec3_t m_vecSpawnAngles; // Spawn-time angles.
     int m_iMoveType; // Spawn-time move type.
     string_t m_szItemName; // Item name referred to by triggers, doesn't need to be unique -- remember the targetname refers to the entity itself only.
     string_t m_szItemGroup; // Group name referred to by triggers.
-    byte u11_1[4];
+    string_t m_szDisplayName; // Friendly item name for client-side UI.
     string_t m_szDescription; // Friendly item description for client-side UI.
-    byte u11_2[4];
+    byte u11_1[4];
     int m_iCollectLimit; // How many times the item can be picked up, destroyed when limit is reached (0 = infinite).
-    byte u11_3[4];
+    int m_iActivateLimit; // How many times the item can be activated (0 = infinite).
     float m_flWeight; // How heavy the item is (0-100),<br>holders can hold multiple items up to a total weight 100, think of this as KG if you like (though what person can carry 100KG!?).
     bool m_fHiddenWhenCarried; // Model is hidden while it is being carried.
-    byte u11_4[3];
+    byte u11_2[3];
     int m_iIdleSkin; // Model skin while IDLE (not carried).
     int m_iIdleBody; // Model body while IDLE.
     string_t m_szIdleSequenceName; // Model sequence name while IDLE.
@@ -44,16 +44,17 @@ public:
     int m_iCantHaveItemGroupNum; // Number of item(s) from the can't have group(s) (0 = all)
     string_t m_szItemNameNotMoved; // These item(s) must NOT have moved
     float m_flMaximumHoldTime; // Limit to how long this item can be held for, forcibly dropped after (0 = no limit)
-    byte u11_5[4];
+    float m_flActivateWaitTime; // Time to wait between each activation (0 = none)
     float m_flWearOutTime; // Perform a trigger prior to this item being forcibly dropped (0 = none)
-    byte u11_6[2];
+    bool m_fCanBeActivated; // Holder is allowed to activate this item by choice at any time
+    bool m_fHoldTimeWaitUntilActivated; // Maximum hold time is not started until the item is activated (ignored if m_fCanBeActivated is false)
     bool m_fCanBeDropped; // Holder is allowed to drop this item by choice
-    byte u11_7[1];
+    byte u11_3[1];
     float m_flReturnTime; // How long this item returns to its' original location when dropped (-1 = never, 0 = instant)
     bool m_fDelayedRespawn; // Delayed respawn on return (like with weapons/ammo/pickups)
     bool m_fKeepOnDeath; // Holder still has the item after dying (i.e. so they can keep it while being revived)
     bool m_fKeepOnRespawn; // Holder still has the item after respawning (only applies to players -- re-equip NPC's manually)
-    byte u11_8[1];
+    byte u11_4[1];
     string_t m_szTriggerOnCollectSelf; // On successful collection (for collector)
     string_t m_szTriggerOnCollectTeam; // On successful collection (for collector's team)
     string_t m_szTriggerOnCollectOther; // On successful collection (for everyone else)
@@ -66,7 +67,12 @@ public:
     string_t m_szTriggerOnCantDropSelf; // On failed drop (for collector)
     string_t m_szTriggerOnCantDropTeam; // On failed drop (for collector's team)
     string_t m_szTriggerOnCantDropOther; // On failed drop (for everyone else)
-    byte u11_9[24];
+    string_t m_szTriggerOnActivateSelf; // On self-activation (for collector)
+    string_t m_szTriggerOnActivateTeam; // On self-activation (for collector's team)
+    string_t m_szTriggerOnActivateOther; // On self-activation (for everyone else)
+    string_t m_szTriggerOnCantActivateSelf; // On failed self - activation(for collector)
+    string_t m_szTriggerOnCantActivateTeam; // On failed self-activation (for collector's team)
+    string_t m_szTriggerOnCantActivateOther; // On failed self-activation (for everyone else)
     string_t m_szTriggerOnUseSelf; // On use by trigger (for collector)
     string_t m_szTriggerOnUseTeam; // On use by trigger (for collector's team)
     string_t m_szTriggerOnUseOther; // On use by trigger (for everyone else)
@@ -77,10 +83,10 @@ public:
     string_t m_szTriggerOnReturnTeam; // On return (for collector's team)
     string_t m_szTriggerOnReturnOther; // On return (for everyone else)
     string_t m_szTriggerOnMaterialise; // On materialise after return
-    string_t m_szTriggerOnDestroy; // On destroy
-    byte u11_10[1];
+    string_t m_szTriggerOnDestroy; // On destruction
+    bool m_fEffectsWaitUntilActivated; // Holder effects do not apply until the item is activated (ignored if m_fCanBeActivated is false)
     bool m_fEffectsPermanent; // Holder keeps effects after dropping the item
-    byte u11_11[2];
+    byte u11_5[2];
     vec3_t m_vecEffectGlowColor; // Holder has a glow shell
     bool m_fEffectBlockWeapons; // Holder can't use weapons
     bool m_fEffectInvulnerable; // Holder is invulnerable (god mode)
@@ -92,11 +98,12 @@ public:
     float m_flEffectSpeed; // Movement speed modifier (%)
     float m_flEffectDamage; // Damage modifier (%)
     int m_iCollectCount; // Number of times the item has been collected
-    byte u11_12[4];
+    int m_iActivateCount; // Number of times the item has been self-activated
     float m_flTouchedTime; // Time the item was last touched
     float m_flCollectTime; // Time the item was last collected
     float m_flDropTime; // Time the item was last dropped
-    byte u11_13[4];
+    float m_flActivateTime; // Time the item was last self-activated
     bool m_fRemovedByForced; // Item was just removed by force
+    bool m_fHandledWearingOut; // Item has performed its wearing out trigger
 };
 #pragma pack(pop)

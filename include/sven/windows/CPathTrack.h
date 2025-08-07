@@ -8,7 +8,7 @@
 // Example entity: path_track
 class CPathTrack : public CBaseEntity {
 public:
-    byte u12_0[144];
+    byte u12_0[148];
     float m_length;
     string_t m_altName;
     float m_flNewSpeed; // New train speed

@@ -40,7 +40,7 @@ public:
     byte u6_10[3];
     int m_iDrownDmg; // Track drowning damage taken.
     int m_iDrownRestored; // Track drowning damage restored.
-    byte u6_11[8];
+    byte u6_11[12];
     int m_iTrain; // Train control position
     byte u6_12[16];
     EHandle m_hTank; // the tank which the player is currently controlling, NULL if no tank
@@ -59,25 +59,7 @@ public:
     int m_iDeaths; // get player death count.
     byte u6_19[12];
     float m_flNextDecalTime; // Next time this player can spray a decal.
-    byte u6_20[1896];
+    byte u6_20[1924];
     int m_iPlayerClass; // The player's class type.
-
-    bool IsConnected() {
-        return STRING(pev->netname)[0] != '\0'; /* return *((byte*)this + 3292); */
-    }
-
-    bool IsOnLadder() {
-        return pev->movetype == MOVETYPE_FLY;
-    }
-
-    // TODO: maps/plugins can change iuser1 so it's not super reliable. Use the angelscript api
-    bool IsObserver() {
-        return pev->iuser1 > 0;
-    }
-
-    // TODO: maps/plugins can change iuser2 so it's not super reliable. Use the angelscript api
-    edict_t* GetObserverTarget() {
-        return IsObserver() ? INDEXENT(pev->iuser2) : NULL;
-    }
 };
 #pragma pack(pop)

@@ -8,12 +8,14 @@
 // Example entity: weapon_crowbar
 class CBasePlayerItem : public CBaseAnimating {
 public:
-    byte u8_0[62];
+    byte u8_0[26];
+    int m_dropType; // The current drop type. Check the DROP_TYPE Enum.
+    byte u8_1[32];
     EHandle m_hPlayer; // The owning player. null if no owner.
     EHandle m_hNextItem; // Gets the next item. null if no next item.
-    byte u8_1[8];
+    byte u8_2[8];
     float m_flLastBounce; // The last bounce time.
-    byte u8_2[20];
+    byte u8_3[20];
     bool m_bExclusiveHold; // If set, as long as a player has this item, the player must keep this weapon selected.No more than one item with this set can be carried at one time.
 };
 #pragma pack(pop)
